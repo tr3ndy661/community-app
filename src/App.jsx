@@ -8,7 +8,7 @@ import Profile from './components/Profile'
 import Exchanges from './components/Exchanges'
 import Dashboard from './components/Dashboard'
 import EmergencyMode from './components/EmergencyMode'
-import { GlobalStyle, Container, Header, Nav, NavButton } from './components/ExpediaTheme'
+import { GlobalStyle, Container, Header, Nav, NavButton, Button } from './components/ExpediaTheme'
 import styled from 'styled-components'
 import { Toaster } from 'react-hot-toast'
 
@@ -85,12 +85,9 @@ function App() {
     return () => subscription.unsubscribe()
   }, [])
 
-  useEffect(() => {
-    if (session) {
-      // Request notification permission when user logs in
-      requestNotificationPermission()
-    }
-  }, [session])
+  const handleRequestNotifications = async () => {
+    await requestNotificationPermission()
+  }
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -125,6 +122,9 @@ function App() {
               <Logo>🌍 Global Skills Exchange</Logo>
               <UserInfo>
                 <span>Welcome, {session.user.email}</span>
+                <Button variant="secondary" onClick={handleRequestNotifications} style={{ marginRight: '8px' }}>
+                  🔔 Enable Notifications
+                </Button>
                 <SignOutButton onClick={handleSignOut}>
                   Sign Out
                 </SignOutButton>
